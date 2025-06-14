@@ -1,0 +1,6 @@
+@OrganizeAgenda_HostAddress = http://localhost:5249
+
+GET {{OrganizeAgenda_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
