@@ -1,4 +1,6 @@
-﻿namespace OrganizeAgenda.DTOs
+﻿using OrganizeAgenda.DTOs.User;
+
+namespace OrganizeAgenda.DTOs
 {
     /// <summary>
     /// Data Transfer Object para informações de agendamento.

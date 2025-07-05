@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrganizeAgenda.Abstractions;
-using OrganizeAgenda.DTOs;
+using OrganizeAgenda.DTOs.User;
+using OrganizeAgenda.Repository;
 using OrganizeAgenda.Utils;
+using System.ComponentModel;
 
 namespace OrganizeAgenda.Controllers
 {
@@ -12,42 +14,81 @@ namespace OrganizeAgenda.Controllers
         // GET: api/User
         [HttpGet]
         [Route(ApiRoutes.User.GetAll)]
-        public async Task<IActionResult> GetAllUsersAsync([FromServices] IUserService service) => (IActionResult)await service.GetAllUsersAsync();
+        public async Task<IActionResult> GetAllUsers([FromServices] IUserService service)
+        {
+            var users = await service.GetAllUsersAsync();
+
+            var response = users.Select(user => new UserResponseDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                CreatedAt = user.CreatedAt
+            });
+
+            return Ok(response);
+        }
 
         // GET: api/User/5
-        [HttpGet("{id}")]
+        [HttpGet]
         [Route(ApiRoutes.User.GetById)]
-        public IActionResult GetUserById(int id)
+        [Description("GetByID")]
+        public async Task<IActionResult> GetUserById([FromQuery] int id, [FromServices] IUserService service)
         {
-            // Example: return a static user
-            var user = new { Id = id, Name = $"User{id}" };
-            return Ok(user);
+            var user = await service.GetUserByIdAsync(id);
+            if (user == null)
+                return NotFound();
+
+            var response = new UserResponseDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                CreatedAt = user.CreatedAt
+            };
+
+            return Ok(response);
         }
 
         // POST: api/User
         [HttpPost]
         [Route(ApiRoutes.User.Create)]
-        public IActionResult CreateUser([FromBody] UserDTO user)
+        public async Task<IActionResult> CreateUser([FromBody] UserDTO user, [FromServices] IUserService service)
         {
-            // Example: return the created user
-            return CreatedAtAction(nameof(GetUserById), new { id = 1 }, user);
+            var createdUser = await service.CreateUserAsync(user);
+
+            var response = new UserResponseDto
+            {
+                Id = createdUser.Id,
+                Name = createdUser.Name,
+                Email = createdUser.Email,
+                CreatedAt = createdUser.CreatedAt
+            };
+
+            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, response);
         }
 
         // PUT: api/User/5
-        [HttpPut("{id}")]
+        [HttpPut]
         [Route(ApiRoutes.User.Update)]
-        public IActionResult UpdateUser(int id, [FromBody] UserDTO user)
+        public async Task<IActionResult> UpdateUser([FromBody] UserDTO user, [FromServices] IUserService service)
         {
-            // Example: return no content
+            var updated = await service.UpdateUserAsync(user);
+            if (!updated)
+                return NotFound();
+
             return NoContent();
         }
 
         // DELETE: api/User/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Route(ApiRoutes.User.Delete)]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser([FromQuery] int id, [FromServices] IUserService service)
         {
-            // Example: return no content
+            var deleted = await service.DeleteUserAsync(id);
+            if (!deleted)
+                return NotFound();
+
             return NoContent();
         }
     }

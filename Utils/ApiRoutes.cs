@@ -37,12 +37,12 @@
             /// <summary>
             /// Rota para atualizar um usuário existente.
             /// </summary>
-            public const string Update = Base + "api/user/{id}";
+            public const string Update = Base + "api/user";
 
             /// <summary>
             /// Rota para deletar um usuário.
             /// </summary>
-            public const string Delete = Base + "api/user/{id}";
+            public const string Delete = Base + "api/user";
         }
     }
 }

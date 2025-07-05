@@ -1,4 +1,4 @@
-﻿using OrganizeAgenda.DTOs;
+﻿using OrganizeAgenda.DTOs.User;
 
 namespace OrganizeAgenda.Abstractions
 {
@@ -29,7 +29,7 @@ namespace OrganizeAgenda.Abstractions
         /// </summary>
         /// <param name="id">O ID do usuário a ser atualizado.</param>
         /// <param name="user">Os novos dados do usuário.</param>
-        Task<bool> UpdateUserAsync(int id, UserDTO user);
+        Task<bool> UpdateUserAsync(UserDTO user);
 
         /// <summary>
         /// Deleta um usuário pelo ID.
