@@ -1,14 +1,22 @@
-var builder = WebApplication.CreateBuilder(args);
+using OrganizeAgenda.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 // Register IUserService with UserService
-builder.Services.AddSingleton<OrganizeAgenda.Abstractions.IUserService, OrganizeAgenda.Services.UserService>();
+builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserService, OrganizeAgenda.Services.UserService>();
+
+// Register IUserRepository with UserRepository
+builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserRepository, OrganizeAgenda.Repository.UserRepository>();
 
 var app = builder.Build();
 
