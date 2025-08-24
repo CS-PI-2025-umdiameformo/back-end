@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrganizeAgenda.Abstractions;
+using OrganizeAgenda.DTOs;
 
 namespace OrganizeAgenda.Controllers
 {
@@ -36,6 +37,35 @@ namespace OrganizeAgenda.Controllers
             }
 
             return Ok(agendamento);
+        }
+
+        /// <summary>
+        /// Atualiza um agendamento existente.
+        /// </summary>
+        /// <param name="id">Identificador do agendamento.</param>
+        /// <param name="agendamento">Dados atualizados do agendamento.</param>
+        /// <returns>Resultado da operação.</returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Atualizar(int id, [FromBody] AgendamentoDTO agendamento)
+        {
+            if (string.IsNullOrWhiteSpace(agendamento.Titulo))
+            {
+                return BadRequest("O título não pode ser vazio.");
+            }
+
+            if (agendamento.DataHora < DateTime.Now)
+            {
+                return BadRequest("A data do agendamento não pode estar no passado.");
+            }
+
+            agendamento.Id = id;
+            var atualizado = await _agendamentoService.AtualizarAsync(agendamento);
+            if (!atualizado)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

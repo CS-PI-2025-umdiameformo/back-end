@@ -57,6 +57,11 @@ namespace OrganizeAgenda.Services
         /// <returns>True se atualizado com sucesso.</returns>
         public Task<bool> AtualizarAsync(AgendamentoDTO agendamento)
         {
+            if (string.IsNullOrWhiteSpace(agendamento.Titulo) || agendamento.DataHora < DateTime.Now)
+            {
+                return Task.FromResult(false);
+            }
+
             var indice = _agendamentos.FindIndex(a => a.Id == agendamento.Id);
             if (indice == -1)
             {
