@@ -8,47 +8,80 @@ namespace OrganizeAgenda.Services
     /// </summary>
     public class AgendamentoService : IAgendamentoService
     {
-        // Aqui você pode injetar um repositório de agendamentos, por exemplo:
-        // private readonly IAgendamentoRepository _agendamentoRepository;
+        /// <summary>
+        /// Lista em memória utilizada como armazenamento temporário dos agendamentos.
+        /// </summary>
+        private static readonly List<AgendamentoDTO> _agendamentos = new();
 
-        // public AgendamentoService(IAgendamentoRepository agendamentoRepository)
-        // {
-        //     _agendamentoRepository = agendamentoRepository;
-        // }
+        /// <summary>
+        /// Controle para geração de identificadores dos agendamentos.
+        /// </summary>
+        private static int _proximoId = 1;
 
-        public async Task<int> CriarAsync(AgendamentoDTO agendamento)
+        /// <summary>
+        /// Cria um novo agendamento e o armazena na lista em memória.
+        /// </summary>
+        /// <param name="agendamento">Dados do agendamento.</param>
+        /// <returns>Identificador do agendamento criado.</returns>
+        public Task<int> CriarAsync(AgendamentoDTO agendamento)
         {
-            // Implementação fictícia: retorna um id fixo
-            await Task.CompletedTask;
-            return 1;
+            agendamento.Id = _proximoId++;
+            _agendamentos.Add(agendamento);
+            return Task.FromResult(agendamento.Id);
         }
 
-        public async Task<IEnumerable<AgendamentoDTO>> ListarTodosAsync()
+        /// <summary>
+        /// Lista todos os agendamentos armazenados.
+        /// </summary>
+        /// <returns>Coleção de agendamentos.</returns>
+        public Task<IEnumerable<AgendamentoDTO>> ListarTodosAsync()
         {
-            // Implementação fictícia: retorna uma lista vazia
-            await Task.CompletedTask;
-            return new List<AgendamentoDTO>();
+            return Task.FromResult<IEnumerable<AgendamentoDTO>>(_agendamentos);
         }
 
-        public async Task<AgendamentoDTO?> ObterPorIdAsync(int id)
+        /// <summary>
+        /// Obtém os detalhes de um agendamento específico.
+        /// </summary>
+        /// <param name="id">Identificador do agendamento.</param>
+        /// <returns>Agendamento encontrado ou null.</returns>
+        public Task<AgendamentoDTO?> ObterPorIdAsync(int id)
         {
-            // Implementação fictícia: retorna null
-            await Task.CompletedTask;
-            return null;
+            var agendamento = _agendamentos.FirstOrDefault(a => a.Id == id);
+            return Task.FromResult(agendamento);
         }
 
-        public async Task<bool> AtualizarAsync(AgendamentoDTO agendamento)
+        /// <summary>
+        /// Atualiza um agendamento existente.
+        /// </summary>
+        /// <param name="agendamento">Dados atualizados do agendamento.</param>
+        /// <returns>True se atualizado com sucesso.</returns>
+        public Task<bool> AtualizarAsync(AgendamentoDTO agendamento)
         {
-            // Implementação fictícia: retorna true
-            await Task.CompletedTask;
-            return true;
+            var indice = _agendamentos.FindIndex(a => a.Id == agendamento.Id);
+            if (indice == -1)
+            {
+                return Task.FromResult(false);
+            }
+
+            _agendamentos[indice] = agendamento;
+            return Task.FromResult(true);
         }
 
-        public async Task<bool> RemoverAsync(int id)
+        /// <summary>
+        /// Remove um agendamento pelo identificador.
+        /// </summary>
+        /// <param name="id">Identificador do agendamento.</param>
+        /// <returns>True se removido com sucesso.</returns>
+        public Task<bool> RemoverAsync(int id)
         {
-            // Implementação fictícia: retorna true
-            await Task.CompletedTask;
-            return true;
+            var agendamento = _agendamentos.FirstOrDefault(a => a.Id == id);
+            if (agendamento == null)
+            {
+                return Task.FromResult(false);
+            }
+
+            _agendamentos.Remove(agendamento);
+            return Task.FromResult(true);
         }
     }
 }
