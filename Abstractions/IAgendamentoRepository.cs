@@ -1,11 +1,11 @@
-﻿using OrganizeAgenda.DTOs;
+using OrganizeAgenda.DTOs;
 
 namespace OrganizeAgenda.Abstractions
 {
     /// <summary>
-    /// Interface para serviços de agendamento.
+    /// Interface para reposit�rio de agendamento.
     /// </summary>
-    public interface IAgendamentoService
+    public interface IAgendamentoRepository
     {
         Task<int> CriarAsync(AgendamentoDTO agendamento);
         Task<IEnumerable<AgendamentoDTO>> ListarTodosAsync();

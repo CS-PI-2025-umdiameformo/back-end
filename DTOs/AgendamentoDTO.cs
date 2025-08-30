@@ -8,6 +8,11 @@ namespace OrganizeAgenda.DTOs
     public class AgendamentoDTO
     {
         /// <summary>
+        /// Identificador único do agendamento.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Título do agendamento.
         /// </summary>
         public string Titulo { get; set; } = string.Empty;

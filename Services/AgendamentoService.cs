@@ -8,47 +8,36 @@ namespace OrganizeAgenda.Services
     /// </summary>
     public class AgendamentoService : IAgendamentoService
     {
-        // Aqui você pode injetar um repositório de agendamentos, por exemplo:
-        // private readonly IAgendamentoRepository _agendamentoRepository;
+        private readonly IAgendamentoRepository _agendamentoRepository;
 
-        // public AgendamentoService(IAgendamentoRepository agendamentoRepository)
-        // {
-        //     _agendamentoRepository = agendamentoRepository;
-        // }
+        public AgendamentoService(IAgendamentoRepository agendamentoRepository)
+        {
+            _agendamentoRepository = agendamentoRepository;
+        }
 
         public async Task<int> CriarAsync(AgendamentoDTO agendamento)
         {
-            // Implementação fictícia: retorna um id fixo
-            await Task.CompletedTask;
-            return 1;
+            return await _agendamentoRepository.CriarAsync(agendamento);
         }
 
         public async Task<IEnumerable<AgendamentoDTO>> ListarTodosAsync()
         {
-            // Implementação fictícia: retorna uma lista vazia
-            await Task.CompletedTask;
-            return new List<AgendamentoDTO>();
+            return await _agendamentoRepository.ListarTodosAsync();
         }
 
         public async Task<AgendamentoDTO?> ObterPorIdAsync(int id)
         {
-            // Implementação fictícia: retorna null
-            await Task.CompletedTask;
-            return null;
+            return await _agendamentoRepository.ObterPorIdAsync(id);
         }
 
         public async Task<bool> AtualizarAsync(AgendamentoDTO agendamento)
         {
-            // Implementação fictícia: retorna true
-            await Task.CompletedTask;
-            return true;
+            return await _agendamentoRepository.AtualizarAsync(agendamento);
         }
 
         public async Task<bool> RemoverAsync(int id)
         {
-            // Implementação fictícia: retorna true
-            await Task.CompletedTask;
-            return true;
+            return await _agendamentoRepository.RemoverAsync(id);
         }
     }
 }

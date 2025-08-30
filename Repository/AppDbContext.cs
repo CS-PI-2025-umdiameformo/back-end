@@ -1,25 +1,67 @@
-﻿namespace OrganizeAgenda.Repository
-{
-    using Microsoft.EntityFrameworkCore;
-    using OrganizeAgenda.DTOs.User;
+﻿using Microsoft.EntityFrameworkCore;
+using OrganizeAgenda.DTOs;
 
+namespace OrganizeAgenda.Repository
+{
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<UserDTO> Users { get; set; }
+        public DbSet<UserDTO> Users { get; set; } = null!;
+        public DbSet<AgendamentoDTO> Agendamentos { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configurações do modelo (mapeamento)
             modelBuilder.Entity<UserDTO>(builder =>
             {
+                builder.ToTable("users"); // Nome da tabela em minúsculo (convenção PostgreSQL)
                 builder.HasKey(u => u.Id);
-                builder.Property(u => u.Name).IsRequired().HasMaxLength(100);
-                //builder.Property(u => u.LastName).IsRequired().HasMaxLength(50);
-                builder.Property(u => u.Email).IsRequired().HasMaxLength(100);
-                builder.HasIndex(u => u.Email).IsUnique(); // Garante unicidade no banco de dados
-                builder.Property(u => u.PasswordHash).IsRequired();
+                
+                builder.Property(u => u.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("name");
+
+                builder.Property(u => u.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("email");
+
+                builder.Property(u => u.PasswordHash)
+                    .IsRequired()
+                    .HasColumnName("password_hash");
+
+                builder.Property(u => u.CreatedAt)
+                    .IsRequired()
+                    .HasColumnName("created_at")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                builder.HasIndex(u => u.Email)
+                    .IsUnique();
+            });
+
+            modelBuilder.Entity<AgendamentoDTO>(builder =>
+            {
+                builder.ToTable("agendamentos"); // Nome da tabela em minúsculo (convenção PostgreSQL)
+                builder.HasKey(a => a.Id);
+                
+                builder.Property(a => a.Titulo)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("titulo");
+
+                builder.Property(a => a.DataHora)
+                    .IsRequired()
+                    .HasColumnName("data_hora");
+
+                builder.Property(a => a.Descricao)
+                    .HasMaxLength(500)
+                    .HasColumnName("descricao");
+
+                builder.HasOne(a => a.Usuario)
+                    .WithMany()
+                    .HasForeignKey(a => a.Usuario.Id)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }
