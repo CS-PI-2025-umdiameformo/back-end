@@ -17,6 +17,12 @@ namespace OrganizeAgenda.Services
 
         public async Task<int> CriarAsync(AgendamentoDTO agendamento)
         {
+            if (agendamento.DataHora <= DateTime.Now)
+                throw new ArgumentException("A data e hora do agendamento deve ser futura.");
+            
+            if (string.IsNullOrWhiteSpace(agendamento.Titulo))
+                throw new ArgumentException("O agendamento deve possuir um título.");
+
             return await _agendamentoRepository.CriarAsync(agendamento);
         }
 
