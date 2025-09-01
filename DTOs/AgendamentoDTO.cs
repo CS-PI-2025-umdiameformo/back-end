@@ -5,6 +5,12 @@
     /// </summary>
     public class AgendamentoDTO
     {
+
+        /// <summary>
+        /// Identificador do agendamento.
+        /// </summary>
+        public int Id { get; set; }
+
         /// <summary>
         /// Identificador único do agendamento.
         /// </summary>
@@ -29,5 +35,10 @@
         /// Usuário que criou o agendamento.
         /// </summary>
         public UserDTO Usuario { get; set; } = new UserDTO();
+
+        /// <summary>
+        /// Tipo de recorrência do agendamento.
+        /// </summary>
+        public TipoRecorrencia Recorrencia { get; set; } = TipoRecorrencia.Nenhuma;
     }
 }
