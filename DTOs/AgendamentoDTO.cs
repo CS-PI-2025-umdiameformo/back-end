@@ -1,6 +1,4 @@
-﻿using OrganizeAgenda.DTOs.User;
-
-namespace OrganizeAgenda.DTOs
+﻿namespace OrganizeAgenda.DTOs
 {
     /// <summary>
     /// Data Transfer Object para informações de agendamento.
@@ -10,6 +8,11 @@ namespace OrganizeAgenda.DTOs
 
         /// <summary>
         /// Identificador do agendamento.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Identificador único do agendamento.
         /// </summary>
         public int Id { get; set; }
 

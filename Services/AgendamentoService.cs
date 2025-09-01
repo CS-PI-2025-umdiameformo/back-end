@@ -8,6 +8,13 @@ namespace OrganizeAgenda.Services
     /// </summary>
     public class AgendamentoService : IAgendamentoService
     {
+        private readonly IAgendamentoRepository _agendamentoRepository;
+
+        public AgendamentoService(IAgendamentoRepository agendamentoRepository)
+        {
+            _agendamentoRepository = agendamentoRepository;
+        }
+
         /// <summary>
         /// Lista em memória utilizada como armazenamento temporário dos agendamentos.
         /// </summary>
@@ -25,6 +32,13 @@ namespace OrganizeAgenda.Services
         /// <returns>Identificador do agendamento criado.</returns>
         public Task<int> CriarAsync(AgendamentoDTO agendamento)
         {
+            if (agendamento.DataHora <= DateTime.Now)
+                throw new ArgumentException("A data e hora do agendamento deve ser futura.");
+            
+            if (string.IsNullOrWhiteSpace(agendamento.Titulo))
+                throw new ArgumentException("O agendamento deve possuir um título.");
+
+            return await _agendamentoRepository.CriarAsync(agendamento);
             agendamento.Id = _proximoId++;
             _agendamentos.Add(agendamento);
             return Task.FromResult(agendamento.Id);
@@ -36,6 +50,8 @@ namespace OrganizeAgenda.Services
         /// <returns>Coleção de agendamentos.</returns>
         public Task<IEnumerable<AgendamentoDTO>> ListarTodosAsync()
         {
+
+            return await _agendamentoRepository.ListarTodosAsync();
             return Task.FromResult<IEnumerable<AgendamentoDTO>>(_agendamentos);
         }
 
@@ -46,8 +62,10 @@ namespace OrganizeAgenda.Services
         /// <returns>Agendamento encontrado ou null.</returns>
         public Task<AgendamentoDTO?> ObterPorIdAsync(int id)
         {
+            return await _agendamentoRepository.ObterPorIdAsync(id);
             var agendamento = _agendamentos.FirstOrDefault(a => a.Id == id);
             return Task.FromResult(agendamento);
+
         }
 
         /// <summary>
@@ -57,6 +75,8 @@ namespace OrganizeAgenda.Services
         /// <returns>True se atualizado com sucesso.</returns>
         public Task<bool> AtualizarAsync(AgendamentoDTO agendamento)
         {
+            return await _agendamentoRepository.AtualizarAsync(agendamento);
+
             if (string.IsNullOrWhiteSpace(agendamento.Titulo) || agendamento.DataHora < DateTime.Now)
             {
                 return Task.FromResult(false);
@@ -79,6 +99,7 @@ namespace OrganizeAgenda.Services
         /// <returns>True se removido com sucesso.</returns>
         public Task<bool> RemoverAsync(int id)
         {
+            return await _agendamentoRepository.RemoverAsync(id);
             var agendamento = _agendamentos.FirstOrDefault(a => a.Id == id);
             if (agendamento == null)
             {
