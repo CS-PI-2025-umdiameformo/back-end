@@ -42,7 +42,7 @@ namespace OrganizeAgenda.Repository
 
             modelBuilder.Entity<AgendamentoDTO>(builder =>
             {
-                builder.ToTable("agendamentos"); // Nome da tabela em minúsculo (convenção PostgreSQL)
+                builder.ToTable("agendamentos"); 
                 builder.HasKey(a => a.Id);
                 
                 builder.Property(a => a.Titulo)

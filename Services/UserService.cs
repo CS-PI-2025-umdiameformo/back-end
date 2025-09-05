@@ -1,5 +1,5 @@
 ﻿using OrganizeAgenda.Abstractions;
-using OrganizeAgenda.DTOs.User;
+using OrganizeAgenda.DTOs;
 
 namespace OrganizeAgenda.Services
 {

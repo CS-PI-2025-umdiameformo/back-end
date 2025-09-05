@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrganizeAgenda.Abstractions;
+using OrganizeAgenda.DTOs;
 using OrganizeAgenda.DTOs.User;
 using OrganizeAgenda.Repository;
 using OrganizeAgenda.Utils;

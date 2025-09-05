@@ -1,0 +1,6 @@
+# Arquivos e pastas do Visual Studio
+.vs/
+
+# Pastas de saída da compilação (Build output)
+bin/
+obj/

@@ -1,4 +1,4 @@
-﻿namespace OrganizeAgenda.DTOs.User
+﻿namespace OrganizeAgenda.DTOs
 {
     /// <summary>
     /// Data Transfer Object para informações do usuário.
