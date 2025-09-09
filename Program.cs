@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using OrganizeAgenda.Abstractions.LivrariaApi.Application.Services;
+using OrganizeAgenda.Abstractions;
 using OrganizeAgenda.DTOs;
 using OrganizeAgenda.Repository;
+using OrganizeAgenda.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
