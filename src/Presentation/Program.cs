@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using OrganizeAgenda.Abstractions.LivrariaApi.Application.Services;
-using OrganizeAgenda.DTOs;
-using OrganizeAgenda.Repository;
+using OrganizeAgenda.Application.Interfaces;
+using OrganizeAgenda.Application.Services;
+using OrganizeAgenda.Infrastructure.Persistence;
+using OrganizeAgenda.Infrastructure.Persistence.Interface;
+using OrganizeAgenda.Infrastructure.Persistence.Repositories;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,8 +62,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserService, OrganizeAgenda.Services.UserService>();
-builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserRepository, OrganizeAgenda.Repository.UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IAuthService>(new AuthService(builder.Configuration["Jwt:Key"], builder.Configuration["Jwt:Issuer"]));
 
 var app = builder.Build();
@@ -76,15 +77,15 @@ if (app.Environment.IsDevelopment())
 
 //temporário, apenas pra testar no swagger e criar a issue no github
 //
-app.MapPost("/api/auth/login", (LoginDto login, IAuthService authService) =>
-{
-    if (login.Username == "admin" && login.Password == "password123")
-    {
-        var token = authService.GenerateToken(login.Username, "Admin");
-        return Results.Ok(new { token });
-    }
-    return Results.Unauthorized();
-}).WithTags("Auth");
+//app.MapPost("/api/auth/login", (LoginDto login, IAuthService authService) =>
+//{
+//    if (login.Username == "admin" && login.Password == "password123")
+//    {
+//        var token = authService.GenerateToken(login.Username, "Admin");
+//        return Results.Ok(new { token });
+//    }
+//    return Results.Unauthorized();
+//}).WithTags("Auth");
 //
 
 

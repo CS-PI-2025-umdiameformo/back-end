@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OrganizeAgenda.DTOs;
-using OrganizeAgenda.Abstractions;
-using OrganizeAgenda.Services;
+using OrganizeAgenda.Application.Interfaces;
+using OrganizeAgenda.Domain.DTOs;
+
 
 namespace OrganizeAgenda.Controllers
 {

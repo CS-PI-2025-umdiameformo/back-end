@@ -1,7 +1,8 @@
-﻿using OrganizeAgenda.Abstractions;
-using OrganizeAgenda.DTOs;
+﻿using OrganizeAgenda.Application.Interfaces;
+using OrganizeAgenda.Domain.DTOs;
+using OrganizeAgenda.Infrastructure.Persistence.Interface;
 
-namespace OrganizeAgenda.Services
+namespace OrganizeAgenda.Application.Services
 {
     /// <summary>
     /// Implementação dos serviços de agendamento.

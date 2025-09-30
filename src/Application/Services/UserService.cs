@@ -1,7 +1,8 @@
-﻿using OrganizeAgenda.Abstractions;
-using OrganizeAgenda.DTOs;
+﻿using OrganizeAgenda.Domain.DTOs;
+using OrganizeAgenda.Application.Interfaces;
+using OrganizeAgenda.Infrastructure.Persistence.Interface;
 
-namespace OrganizeAgenda.Services
+namespace OrganizeAgenda.Application.Services
 {
     /// <summary>
     /// Serviço responsável por gerenciar operações relacionadas a usuários.

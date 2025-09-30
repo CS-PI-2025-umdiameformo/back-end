@@ -1,6 +1,6 @@
-using OrganizeAgenda.DTOs;
+using OrganizeAgenda.Domain.DTOs;
 
-namespace OrganizeAgenda.Abstractions
+namespace OrganizeAgenda.Infrastructure.Persistence.Interface
 {
     /// <summary>
     /// Interface para repositório de agendamento.

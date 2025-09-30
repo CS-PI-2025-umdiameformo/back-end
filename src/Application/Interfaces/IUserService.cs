@@ -1,6 +1,6 @@
-﻿using OrganizeAgenda.DTOs;
+﻿using OrganizeAgenda.Domain.DTOs;
 
-namespace OrganizeAgenda.Abstractions
+namespace OrganizeAgenda.Application.Interfaces
 {
     public interface IUserService
     {

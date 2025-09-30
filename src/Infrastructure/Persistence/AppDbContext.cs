@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OrganizeAgenda.DTOs;
+using OrganizeAgenda.Domain.DTOs;
 
-namespace OrganizeAgenda.Repository
+namespace OrganizeAgenda.Infrastructure.Persistence
 {
     public class AppDbContext : DbContext
     {

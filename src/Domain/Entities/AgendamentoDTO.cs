@@ -1,4 +1,4 @@
-﻿namespace OrganizeAgenda.DTOs
+﻿namespace OrganizeAgenda.Domain.DTOs
 {
     /// <summary>
     /// Data Transfer Object para informações de agendamento.

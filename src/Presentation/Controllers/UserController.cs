@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OrganizeAgenda.Abstractions;
-using OrganizeAgenda.DTOs;
-using OrganizeAgenda.DTOs.User;
-using OrganizeAgenda.Repository;
+using OrganizeAgenda.Application.DTO;
+using OrganizeAgenda.Application.Interfaces;
+using OrganizeAgenda.Domain.DTOs;
 using OrganizeAgenda.Utils;
 using System.ComponentModel;
 

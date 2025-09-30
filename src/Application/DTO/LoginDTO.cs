@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OrganizeAgenda.DTOs
+namespace OrganizeAgenda.Application.DTO
 {
     public record LoginDto(
         [property: Required] string Username,

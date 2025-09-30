@@ -1,4 +1,4 @@
-﻿namespace OrganizeAgenda.DTOs.User
+﻿namespace OrganizeAgenda.Application.DTO
 {
     public class UserResponseDto
     {

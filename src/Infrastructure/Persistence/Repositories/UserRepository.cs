@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OrganizeAgenda.Abstractions;
-using OrganizeAgenda.DTOs;
+using OrganizeAgenda.Domain.DTOs;
+using OrganizeAgenda.Infrastructure.Persistence.Interface;
 
-namespace OrganizeAgenda.Repository
+namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
 {
     /// <summary>
     /// Repositório para operações de usuário utilizando Entity Framework.
