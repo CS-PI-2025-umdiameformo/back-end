@@ -18,6 +18,9 @@ builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserService, OrganizeAge
 // Register IUserRepository with UserRepository
 builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserRepository, OrganizeAgenda.Repository.UserRepository>();
 
+// Register IAgendamentoService with AgendamentoService
+builder.Services.AddScoped<OrganizeAgenda.Abstractions.IAgendamentoService, OrganizeAgenda.Services.AgendamentoService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

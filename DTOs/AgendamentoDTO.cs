@@ -1,12 +1,21 @@
-﻿using OrganizeAgenda.DTOs.User;
-
-namespace OrganizeAgenda.DTOs
+﻿namespace OrganizeAgenda.DTOs
 {
     /// <summary>
     /// Data Transfer Object para informações de agendamento.
     /// </summary>
     public class AgendamentoDTO
     {
+
+        /// <summary>
+        /// Identificador do agendamento.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Identificador único do agendamento.
+        /// </summary>
+        public int Id { get; set; }
+
         /// <summary>
         /// Título do agendamento.
         /// </summary>
@@ -26,5 +35,10 @@ namespace OrganizeAgenda.DTOs
         /// Usuário que criou o agendamento.
         /// </summary>
         public UserDTO Usuario { get; set; } = new UserDTO();
+
+        /// <summary>
+        /// Tipo de recorrência do agendamento.
+        /// </summary>
+        public TipoRecorrencia Recorrencia { get; set; } = TipoRecorrencia.Nenhuma;
     }
 }
