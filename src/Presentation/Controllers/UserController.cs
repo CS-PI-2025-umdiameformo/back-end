@@ -21,9 +21,9 @@ namespace OrganizeAgenda.Controllers
             var response = users.Select(user => new UserResponseDto
             {
                 Id = user.Id,
-                Name = user.Name,
+                Name = user.Nome,
                 Email = user.Email,
-                CreatedAt = user.CreatedAt
+                CreatedAt = user.CriadoEm
             });
 
             return Ok(response);
@@ -42,9 +42,9 @@ namespace OrganizeAgenda.Controllers
             var response = new UserResponseDto
             {
                 Id = user.Id,
-                Name = user.Name,
+                Name = user.Nome,
                 Email = user.Email,
-                CreatedAt = user.CreatedAt
+                CreatedAt = user.CriadoEm
             };
 
             return Ok(response);
@@ -60,9 +60,9 @@ namespace OrganizeAgenda.Controllers
             var response = new UserResponseDto
             {
                 Id = createdUser.Id,
-                Name = createdUser.Name,
+                Name = createdUser.Nome,
                 Email = createdUser.Email,
-                CreatedAt = createdUser.CreatedAt
+                CreatedAt = createdUser.CriadoEm
             };
 
             return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, response);

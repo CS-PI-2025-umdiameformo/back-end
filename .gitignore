@@ -4,3 +4,4 @@
 # Pastas de saída da compilação (Build output)
 bin/
 obj/
+Migrations/

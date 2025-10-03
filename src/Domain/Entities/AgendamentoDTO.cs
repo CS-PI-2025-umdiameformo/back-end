@@ -26,6 +26,11 @@
         public string Descricao { get; set; } = string.Empty;
 
         /// <summary>
+        /// Ef solicitou
+        /// </summary>
+        public int UsuarioId { get; set; }
+
+        /// <summary>
         /// Usuário que criou o agendamento.
         /// </summary>
         public UserDTO Usuario { get; set; } = new UserDTO();

@@ -1,7 +1,7 @@
 ﻿namespace OrganizeAgenda.Domain.DTOs
 {
     /// <summary>
-    /// Data Transfer Object para informações do usuário.
+    /// Data Transfer Object (DTo) para informações do usuário.
     /// </summary>
     public class UserDTO
     {
@@ -13,7 +13,7 @@
         /// <summary>
         /// Nome do usuário.
         /// </summary>
-        public string Name { get; set; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
 
         /// <summary>
         /// E-mail do usuário.
@@ -22,11 +22,16 @@
         /// <summary>
         /// Hash da senha do usuário.
         /// </summary>
-        public string PasswordHash { get; set; } = string.Empty;
+        public string SenhaHash { get; set; } = string.Empty;
 
         /// <summary>
         /// Data e hora em que o usuário foi criado (UTC).
         /// </summary>
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
+
+        /// <summary>
+        /// Agendamentos do usuário.
+        /// </summary>
+        public ICollection<AgendamentoDTO> Agendamentos { get; set; } = new List<AgendamentoDTO>();
     }
 }
