@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OrganizeAgenda.Application.DTO;
 using OrganizeAgenda.Application.Interfaces;
 using OrganizeAgenda.Domain.DTOs;
@@ -14,6 +15,7 @@ namespace OrganizeAgenda.Controllers
         // GET: api/User
         [HttpGet]
         [Route(ApiRoutes.User.GetAll)]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> GetAllUsers([FromServices] IUserService service)
         {
             var users = await service.GetAllUsersAsync();
@@ -71,7 +73,7 @@ namespace OrganizeAgenda.Controllers
         // PUT: api/User/5
         [HttpPut]
         [Route(ApiRoutes.User.Update)]
-        public async Task<IActionResult> UpdateUser([FromBody] UserDTO user, [FromServices] IUserService service)
+        public async Task<IActionResult> UpdateUser([FromBody] int user, [FromServices] IUserService service)
         {
             var updated = await service.UpdateUserAsync(user);
             if (!updated)

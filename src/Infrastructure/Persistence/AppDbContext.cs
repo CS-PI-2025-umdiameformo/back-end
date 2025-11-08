@@ -14,7 +14,7 @@ namespace OrganizeAgenda.Infrastructure.Persistence
         {
             modelBuilder.Entity<UserDTO>(builder =>
             {
-                builder.ToTable("usuario"); // Nome da tabela em minúsculo (convenção PostgreSQL)
+                builder.ToTable("usuarios");
                 builder.HasKey(u => u.Id);
                 
                 builder.Property(u => u.Nome)
@@ -33,13 +33,15 @@ namespace OrganizeAgenda.Infrastructure.Persistence
 
                 builder.Property(u => u.CriadoEm)
                     .IsRequired()
-                    .HasColumnName("created_at")
+                    .HasColumnName("criado_em")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 builder.HasMany(u => u.Agendamentos)
                     .WithOne(a => a.Usuario)
-                    .HasForeignKey(a => a.UsuarioId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    //.HasForeignKey(a => a.UsuarioId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("id_agendamento");
 
                 builder.HasIndex(u => u.Email)
                     .IsUnique();
@@ -63,10 +65,10 @@ namespace OrganizeAgenda.Infrastructure.Persistence
                     .HasMaxLength(500)
                     .HasColumnName("descricao");
 
-                builder.HasOne(a => a.Usuario)
-                    .WithMany()
-                    .HasForeignKey(a => a.UsuarioId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                //builder.HasOne(a => a.Usuario)
+                //    .WithMany(e => e.Agendamentos)
+                //    .HasForeignKey(a => a.UsuarioId)
+                //    .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

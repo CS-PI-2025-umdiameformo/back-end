@@ -29,7 +29,7 @@ namespace OrganizeAgenda.Application.Interfaces
         /// </summary>
         /// <param name="id">O ID do usuário a ser atualizado.</param>
         /// <param name="user">Os novos dados do usuário.</param>
-        Task<bool> UpdateUserAsync(UserDTO user);
+        Task<bool> UpdateUserAsync(int id);
 
         /// <summary>
         /// Deleta um usuário pelo ID.

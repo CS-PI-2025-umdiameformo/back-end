@@ -68,9 +68,17 @@ namespace OrganizeAgenda.Application.Services
         /// </summary>
         /// <param name="user">Dados atualizados do usuário.</param>
         /// <returns>Verdadeiro se a atualização foi bem-sucedida, falso caso contrário.</returns>
-        public async Task<bool> UpdateUserAsync(UserDTO user)
+        public async Task<bool> UpdateUserAsync(int user)
         {
-            return await _userRepository.UpdateAsync(user);
+            UserDTO? usuario = await _userRepository.GetByIdAsync(user);
+            
+            if (usuario == null)
+            {
+                throw new ArgumentNullException(nameof(usuario));
+            }
+
+            UserDTO newuser = new UserDTO();
+            return await _userRepository.UpdateAsync(newuser);
         }
     }
 }
