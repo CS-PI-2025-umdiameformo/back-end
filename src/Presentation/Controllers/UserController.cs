@@ -15,18 +15,13 @@ namespace OrganizeAgenda.Controllers
         // GET: api/User
         [HttpGet]
         [Route(ApiRoutes.User.GetAll)]
-        [Authorize(Roles ="admin")]
+        //[Authorize(Roles ="admin")]
         public async Task<IActionResult> GetAllUsers([FromServices] IUserService service)
         {
-            var users = await service.GetAllUsersAsync();
+            var response = await service.GetAllUsersAsync();
 
-            var response = users.Select(user => new UserResponseDto
-            {
-                Id = user.Id,
-                Name = user.Nome,
-                Email = user.Email,
-                CreatedAt = user.CriadoEm
-            });
+            if (!response.Any())
+                return NotFound();
 
             return Ok(response);
         }
@@ -37,17 +32,9 @@ namespace OrganizeAgenda.Controllers
         [Description("GetByID")]
         public async Task<IActionResult> GetUserById([FromQuery] int id, [FromServices] IUserService service)
         {
-            var user = await service.GetUserByIdAsync(id);
-            if (user == null)
+            var response = await service.GetUserByIdAsync(id);
+            if (response == null)
                 return NotFound();
-
-            var response = new UserResponseDto
-            {
-                Id = user.Id,
-                Name = user.Nome,
-                Email = user.Email,
-                CreatedAt = user.CriadoEm
-            };
 
             return Ok(response);
         }
@@ -58,16 +45,10 @@ namespace OrganizeAgenda.Controllers
         public async Task<IActionResult> CreateUser([FromBody] UserDTO user, [FromServices] IUserService service)
         {
             var createdUser = await service.CreateUserAsync(user);
+            if (createdUser == null)
+                return BadRequest();
 
-            var response = new UserResponseDto
-            {
-                Id = createdUser.Id,
-                Name = createdUser.Nome,
-                Email = createdUser.Email,
-                CreatedAt = createdUser.CriadoEm
-            };
-
-            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, response);
+            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
         }
 
         // PUT: api/User/5

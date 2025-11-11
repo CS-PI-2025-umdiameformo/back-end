@@ -1,6 +1,6 @@
 ﻿namespace OrganizeAgenda.Application.DTO
 {
-    public class UserResponseDto
+    public class UserResponseDTO
     {
         public int Id { get; set; }
         public required string Name { get; set; }

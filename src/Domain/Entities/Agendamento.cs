@@ -3,12 +3,11 @@
     /// <summary>
     /// Data Transfer Object para informações de agendamento.
     /// </summary>
-    public class AgendamentoDTO
+    public class Agendamento
     {
         /// <summary>
         /// Identificador único do agendamento.
         /// </summary>
-        
         public int Id { get; set; }
 
         /// <summary>
@@ -31,5 +30,9 @@
         /// </summary>
         public int UsuarioId { get; set; }
 
+        /// <summary>
+        /// Usuário que criou o agendamento.
+        /// </summary>
+        public User Usuario { get; set; } = new User();
     }
 }

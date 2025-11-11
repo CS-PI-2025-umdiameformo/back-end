@@ -1,5 +1,6 @@
-﻿using OrganizeAgenda.Domain.DTOs;
+﻿using OrganizeAgenda.Application.DTO;
 using OrganizeAgenda.Application.Interfaces;
+using OrganizeAgenda.Domain.DTOs;
 using OrganizeAgenda.Infrastructure.Persistence.Interface;
 
 namespace OrganizeAgenda.Application.Services
@@ -28,10 +29,18 @@ namespace OrganizeAgenda.Application.Services
         /// </summary>
         /// <param name="user">Dados do usuário a ser criado.</param>
         /// <returns>Usuário criado.</returns>
-        public async Task<UserDTO> CreateUserAsync(UserDTO user)
+        public async Task<UserResponseDTO> CreateUserAsync(UserDTO user)
         {
             var createdUser = await _userRepository.CreateUserAsync(user);
-            return createdUser;
+
+            var response = new UserResponseDTO
+            {
+                Id = createdUser.Id,
+                Name = createdUser.Nome,
+                Email = createdUser.Email,
+                CreatedAt = createdUser.CriadoEm
+            };
+            return response;
         }
 
         /// <summary>
@@ -48,9 +57,24 @@ namespace OrganizeAgenda.Application.Services
         /// Obtém todos os usuários.
         /// </summary>
         /// <returns>Lista de usuários.</returns>
-        public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserResponseDTO?>> GetAllUsersAsync()
         {
-            return await _userRepository.GetAllAsync();
+            var users = await _userRepository.GetAllAsync();
+
+            if (!users.Any())
+            {
+                return Enumerable.Empty<UserResponseDTO>();
+            }
+
+            var response = users.Select(user => new UserResponseDTO
+            {
+                Id = user.Id,
+                Name = user.Nome,
+                Email = user.Email,
+                CreatedAt = user.CriadoEm
+            });
+
+            return response;
         }
 
         /// <summary>
@@ -58,9 +82,22 @@ namespace OrganizeAgenda.Application.Services
         /// </summary>
         /// <param name="id">ID do usuário.</param>
         /// <returns>Usuário correspondente ao ID, ou nulo se não encontrado.</returns>
-        public async Task<UserDTO?> GetUserByIdAsync(int id)
+        public async Task<UserResponseDTO?> GetUserByIdAsync(int id)
         {
-            return await _userRepository.GetByIdAsync(id);
+            var user = await _userRepository.GetByIdAsync(id);
+
+            if (user == null)
+                 return null;
+            
+            var response = new UserResponseDTO
+            {
+                Id = user.Id,
+                Name = user.Nome,
+                Email = user.Email,
+                CreatedAt = user.CriadoEm
+            };
+
+            return response;
         }
 
         /// <summary>
@@ -71,7 +108,7 @@ namespace OrganizeAgenda.Application.Services
         public async Task<bool> UpdateUserAsync(int user)
         {
             UserDTO? usuario = await _userRepository.GetByIdAsync(user);
-            
+
             if (usuario == null)
             {
                 throw new ArgumentNullException(nameof(usuario));

@@ -42,7 +42,7 @@ namespace OrganizeAgenda.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, [FromBody] AgendamentoDTO agendamento)
         {
-            if (agendamento == null || agendamento.Usuario == null || agendamento.Usuario.Id != id)
+            if (agendamento == null || agendamento.Id != id)
                 return BadRequest();
 
             var atualizado = await _agendamentoService.AtualizarAsync(agendamento);

@@ -1,4 +1,5 @@
-﻿using OrganizeAgenda.Domain.DTOs;
+﻿using OrganizeAgenda.Application.DTO;
+using OrganizeAgenda.Domain.DTOs;
 
 namespace OrganizeAgenda.Application.Interfaces
 {
@@ -8,21 +9,21 @@ namespace OrganizeAgenda.Application.Interfaces
         /// Obtém todos os usuários.
         /// </summary>
         /// <returns>Uma lista de usuários.</returns>
-        Task<IEnumerable<UserDTO>> GetAllUsersAsync();
+        Task<IEnumerable<UserResponseDTO>> GetAllUsersAsync();
 
         /// <summary>
         /// Obtém um usuário pelo ID.
         /// </summary>
         /// <param name="id">O ID do usuário.</param>
         /// <returns>O usuário correspondente ao ID.</returns>
-        Task<UserDTO?> GetUserByIdAsync(int id);
+        Task<UserResponseDTO?> GetUserByIdAsync(int id);
 
         /// <summary>
         /// Cria um novo usuário.
         /// </summary>
         /// <param name="user">Os dados do usuário a serem criados.</param>
         /// <returns>O usuário criado.</returns>
-        Task<UserDTO> CreateUserAsync(UserDTO user);
+        Task<UserResponseDTO> CreateUserAsync(UserDTO user);
 
         /// <summary>
         /// Atualiza um usuário existente.

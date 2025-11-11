@@ -12,7 +12,7 @@ namespace OrganizeAgenda.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserDTO>(builder =>
+            modelBuilder.Entity<User>(builder =>
             {
                 builder.ToTable("usuarios");
                 builder.HasKey(u => u.Id);
@@ -47,7 +47,7 @@ namespace OrganizeAgenda.Infrastructure.Persistence
                     .IsUnique();
             });
 
-            modelBuilder.Entity<AgendamentoDTO>(builder =>
+            modelBuilder.Entity<Agendamento>(builder =>
             {
                 builder.ToTable("agendamentos"); 
                 builder.HasKey(a => a.Id);
