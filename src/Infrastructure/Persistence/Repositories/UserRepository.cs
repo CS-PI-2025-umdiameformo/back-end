@@ -23,15 +23,22 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
         /// <summary>
         /// Retorna todos os usuários.
         /// </summary>
-        public async Task<IEnumerable<UserDTO>> GetAllAsync()
+        public async Task<IEnumerable<UserDTOResponse>> GetAllAsync()
         {
-            return await _context.Users.AsNoTracking().ToListAsync();
+            var response = _context.Users.AsNoTracking().Select(u => new UserDTOResponse
+            {
+                Id = u.Id,
+                Nome = u.Nome,
+                Email = u.Email,
+                CriadoEm = u.CriadoEm
+            });
+            return response;
         }
 
         /// <summary>
         /// Retorna um usuário pelo ID.
         /// </summary>
-        public async Task<UserDTO?> GetByIdAsync(int id)
+        public async Task<UserDTOResponse?> GetByIdAsync(int id)
         {
             return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
         }
@@ -39,10 +46,19 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
         /// <summary>
         /// Cria um novo usuário.
         /// </summary>
-        public async Task<UserDTO> CreateUserAsync(UserDTO user)
+        public async Task<UserDTOResponse> CreateUserAsync(UserDTO user)
         {
-            _context.Users.Add(user);
+            var created = new User
+            {
+                Nome  = user.Nome,
+                Email = user.Email,
+                SenhaHash = user.SenhaHash,
+                CriadoEm = DateTime.UtcNow
+            };
+
+            _context.Users.Add(created);
             await _context.SaveChangesAsync();
+
             return user;
         }
 
@@ -69,5 +85,22 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
             var affected = await _context.SaveChangesAsync();
             return affected > 0;
         }
+
+        private UserDTOResponse MapToResponseDTO(UserDTO user)
+        {
+            return new UserDTOResponse
+            {
+                Id = user.Id,
+                Nome = user.Nome,
+                Email = user.Email,
+                CriadoEm = user.CriadoEm
+            };
+        }
+
+        private string HashSenha(string senha)
+        {
+            return "";
+        }
+
     }
 }

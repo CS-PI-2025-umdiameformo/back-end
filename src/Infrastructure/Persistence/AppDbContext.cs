@@ -7,8 +7,8 @@ namespace OrganizeAgenda.Infrastructure.Persistence
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<UserDTO> Users { get; set; } = null!;
-        public DbSet<AgendamentoDTO> Agendamentos { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Agendamento> Agendamentos { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,7 +38,7 @@ namespace OrganizeAgenda.Infrastructure.Persistence
 
                 builder.HasMany(u => u.Agendamentos)
                     .WithOne(a => a.Usuario)
-                    //.HasForeignKey(a => a.UsuarioId)
+                    .HasForeignKey(a => a.UsuarioId)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("id_agendamento");

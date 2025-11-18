@@ -7,9 +7,9 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Interface
     /// </summary>
     public interface IUserRepository
     {
-        Task<IEnumerable<UserDTO>> GetAllAsync();
-        Task<UserDTO?> GetByIdAsync(int id);
-        Task<UserDTO> CreateUserAsync(UserDTO user);
+        Task<IEnumerable<UserDTOResponse>> GetAllAsync();
+        Task<UserDTOResponse?> GetByIdAsync(int id);
+        Task<UserDTOResponse> CreateUserAsync(UserDTO user);
         Task<bool> UpdateAsync(UserDTO user);
         Task<bool> DeleteAsync(int id);
     }
