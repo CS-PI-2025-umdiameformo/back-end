@@ -19,6 +19,7 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
 
         public async Task<int> CriarAsync(AgendamentoDTO agendamento)
         {
+            // acessar qual usuário e associar ao agendamento no futuro
             _context.Agendamentos.Add(agendamento);
             await _context.SaveChangesAsync();
             return agendamento.Id;

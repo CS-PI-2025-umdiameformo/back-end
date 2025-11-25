@@ -33,8 +33,7 @@ namespace OrganizeAgenda.Application.Services
         {
             var createdUser = await _userRepository.CreateUserAsync(user);
 
-            var response = MapToResponseDTO(user);
-            return response;
+            return createdUser;
         }
 
         /// <summary>
@@ -60,9 +59,7 @@ namespace OrganizeAgenda.Application.Services
                 return Enumerable.Empty<UserDTOResponse>();
             }
 
-            var response = users.Select(MapToResponseDTO);
-
-            return response;
+            return users;
         }
 
         /// <summary>
@@ -87,7 +84,7 @@ namespace OrganizeAgenda.Application.Services
         /// <returns>Verdadeiro se a atualização foi bem-sucedida, falso caso contrário.</returns>
         public async Task<bool> UpdateUserAsync(int user)
         {
-            UserDTO? usuario = await _userRepository.GetByIdAsync(user);
+            UserDTOResponse? usuario = await _userRepository.GetByIdAsync(user);
 
             if (usuario == null)
             {

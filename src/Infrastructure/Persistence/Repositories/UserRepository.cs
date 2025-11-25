@@ -59,7 +59,7 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
             _context.Users.Add(created);
             await _context.SaveChangesAsync();
 
-            return user;
+            return MapToResponseDTO(created);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
             return affected > 0;
         }
 
-        private UserDTOResponse MapToResponseDTO(UserDTO user)
+        private UserDTOResponse MapToResponseDTO(User user)
         {
             return new UserDTOResponse
             {
@@ -99,7 +99,12 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
 
         private string HashSenha(string senha)
         {
-            return "";
+            return senha + "_teste";
+        }
+
+        private string UnHashSenha(string senhaHash)
+        {
+            return senhaHash.Replace("_teste", "");
         }
 
     }

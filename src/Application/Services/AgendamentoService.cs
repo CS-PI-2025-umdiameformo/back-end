@@ -1,4 +1,6 @@
-﻿using OrganizeAgenda.Application.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using OrganizeAgenda.Application.Extensions;
+using OrganizeAgenda.Application.Interfaces;
 using OrganizeAgenda.Domain.DTOs;
 using OrganizeAgenda.Infrastructure.Persistence.Interface;
 
@@ -10,10 +12,12 @@ namespace OrganizeAgenda.Application.Services
     public class AgendamentoService : IAgendamentoService
     {
         private readonly IAgendamentoRepository _agendamentoRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AgendamentoService(IAgendamentoRepository agendamentoRepository)
+        public AgendamentoService(IAgendamentoRepository agendamentoRepository, IHttpContextAccessor context)
         {
             _agendamentoRepository = agendamentoRepository;
+            _httpContextAccessor = context;
         }
 
         public async Task<int> CriarAsync(AgendamentoDTO agendamento)
@@ -24,6 +28,15 @@ namespace OrganizeAgenda.Application.Services
             if (string.IsNullOrWhiteSpace(agendamento.Titulo))
                 throw new ArgumentException("O agendamento deve possuir um título.");
 
+            var user = _httpContextAccessor.HttpContext?.User;
+            if (user == null || !user.Identity?.IsAuthenticated == true)
+                throw new UnauthorizedAccessException("Usuário não autenticado.");
+
+            var usuarioId = user.GetUserIdAsInt(); // ou GetUserIdAsGuid() dependendo do seu modelo
+            if (usuarioId == null)
+                throw new InvalidOperationException("User id não encontrado nos claims.");
+
+            agendamento.UsuarioId = usuarioId.Value;
             return await _agendamentoRepository.CriarAsync(agendamento);
         }
 
