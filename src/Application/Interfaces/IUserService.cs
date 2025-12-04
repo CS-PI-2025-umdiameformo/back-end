@@ -1,0 +1,40 @@
+﻿using OrganizeAgenda.Domain.DTOs;
+
+namespace OrganizeAgenda.Application.Interfaces
+{
+    public interface IUserService
+    {
+        /// <summary>
+        /// Obtém todos os usuários.
+        /// </summary>
+        /// <returns>Uma lista de usuários.</returns>
+        Task<IEnumerable<UserDTOResponse>> GetAllUsersAsync();
+
+        /// <summary>
+        /// Obtém um usuário pelo ID.
+        /// </summary>
+        /// <param name="id">O ID do usuário.</param>
+        /// <returns>O usuário correspondente ao ID.</returns>
+        Task<UserDTOResponse?> GetUserByIdAsync(int id);
+
+        /// <summary>
+        /// Cria um novo usuário.
+        /// </summary>
+        /// <param name="user">Os dados do usuário a serem criados.</param>
+        /// <returns>O usuário criado.</returns>
+        Task<UserDTOResponse> CreateUserAsync(UserDTO user);
+
+        /// <summary>
+        /// Atualiza um usuário existente.
+        /// </summary>
+        /// <param name="id">O ID do usuário a ser atualizado.</param>
+        /// <param name="user">Os novos dados do usuário.</param>
+        Task<bool> UpdateUserAsync(int id);
+
+        /// <summary>
+        /// Deleta um usuário pelo ID.
+        /// </summary>
+        /// <param name="id">O ID do usuário a ser deletado.</param>
+        Task<bool> DeleteUserAsync(int id);
+    }
+}
