@@ -29,10 +29,8 @@ namespace OrganizeAgenda.Application.Services
                 throw new ArgumentException("O agendamento deve possuir um título.");
 
             var user = _httpContextAccessor.HttpContext?.User;
-            if (user == null || !user.Identity?.IsAuthenticated == true)
-                throw new UnauthorizedAccessException("Usuário não autenticado.");
 
-            var usuarioId = user.GetUserIdAsInt(); // ou GetUserIdAsGuid() dependendo do seu modelo
+            var usuarioId = user?.GetUserIdAsInt();
             if (usuarioId == null)
                 throw new InvalidOperationException("User id não encontrado nos claims.");
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizeAgenda.Domain.DTOs;
 using OrganizeAgenda.Infrastructure.Persistence.Interface;
+using System.Text;
 
 namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
 {
@@ -40,7 +41,10 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
         /// </summary>
         public async Task<UserDTOResponse?> GetByIdAsync(int id)
         {
-            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            return user == null ? null : MapToResponseDTO(user);
+
+
         }
 
         /// <summary>
@@ -67,7 +71,19 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
         /// </summary>
         public async Task<bool> UpdateAsync(UserDTO user)
         {
-            _context.Users.Update(user);
+            var existing = await _context.Users.FindAsync(user.Id);
+            if (existing == null)
+                return false;
+
+            existing.Nome = user.Nome;
+            //existing.Email = user.Email;
+            
+            if (!string.IsNullOrWhiteSpace(user.SenhaHash))
+            {
+                existing.SenhaHash = HashSenha(user.SenhaHash);
+            }
+
+            _context.Users.Update(existing);
             var affected = await _context.SaveChangesAsync();
             return affected > 0;
         }
@@ -97,14 +113,16 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
             };
         }
 
+        // Simulação simples de hash de senha
         private string HashSenha(string senha)
         {
-            return senha + "_teste";
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(senha + "_teste"));
         }
 
+        // Simulação simples de 'unhash' de senha
         private string UnHashSenha(string senhaHash)
         {
-            return senhaHash.Replace("_teste", "");
+            return Encoding.UTF8.GetString(Convert.FromBase64String(senhaHash)).Replace("_teste", "");
         }
 
     }
