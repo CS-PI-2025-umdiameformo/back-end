@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
-namespace OrganizeAgenda.Domain.DTOs
+namespace OrganizeAgenda.Domain.Entities
 {
     /// <summary>
     /// Data Transfer Object (DTo) para informações do usuário.
@@ -59,5 +58,5 @@ namespace OrganizeAgenda.Domain.DTOs
         /// Agendamentos do usuário.
         /// </summary>
         public ICollection<Agendamento>? Agendamentos { get; set; } = new List<Agendamento>();
-    }
+        }
 }
