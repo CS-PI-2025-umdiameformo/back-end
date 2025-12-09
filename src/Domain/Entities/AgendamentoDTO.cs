@@ -1,4 +1,6 @@
-﻿namespace OrganizeAgenda.Domain.DTOs
+﻿using OrganizeAgenda.DTOs;
+
+namespace OrganizeAgenda.Domain.DTOs
 {
     /// <summary>
     /// Data Transfer Object para informações de agendamento.
@@ -14,8 +16,6 @@
         /// <summary>
         /// Identificador único do agendamento.
         /// </summary>
-        
-        public int Id { get; set; }
 
         /// <summary>
         /// Título do agendamento.

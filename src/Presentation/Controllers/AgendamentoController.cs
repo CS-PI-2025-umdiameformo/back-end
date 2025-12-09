@@ -2,7 +2,6 @@
 using OrganizeAgenda.Application.Interfaces;
 using OrganizeAgenda.Domain.DTOs;
 
-
 namespace OrganizeAgenda.Controllers
 {
     /// <summary>
@@ -14,12 +13,10 @@ namespace OrganizeAgenda.Controllers
     {
         private readonly IAgendamentoService _agendamentoService;
 
-
         /// <summary>
         /// Construtor que injeta o serviço de agendamentos.
         /// </summary>
         /// <param name="agendamentoService">Serviço de agendamentos.</param>
-
         public AgendamentoController(IAgendamentoService agendamentoService)
         {
             _agendamentoService = agendamentoService;
@@ -49,37 +46,11 @@ namespace OrganizeAgenda.Controllers
         [HttpPost]
         public async Task<IActionResult> Criar([FromBody] AgendamentoDTO agendamento)
         {
-            var id = await _agendamentoService.CriarAsync(agendamento);
-            return CreatedAtAction(nameof(ObterPorId), new { id }, agendamento);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Atualizar(int id, [FromBody] AgendamentoDTO agendamento)
-        {
-            if (agendamento == null || agendamento.Id != id)
+            if (agendamento == null)
                 return BadRequest();
 
-            var atualizado = await _agendamentoService.AtualizarAsync(agendamento);
-            if (!atualizado)
-                return NotFound();
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Remover(int id)
-        {
-            var removido = await _agendamentoService.RemoverAsync(id);
-            if (!removido)
-                return NotFound();
-            return NoContent();
-        }
-    }
-}
-            {
-                return NotFound();
-            }
-
-            return Ok(agendamento);
+            var id = await _agendamentoService.CriarAsync(agendamento);
+            return CreatedAtAction(nameof(ObterPorId), new { id }, agendamento);
         }
 
         /// <summary>
@@ -91,23 +62,29 @@ namespace OrganizeAgenda.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, [FromBody] AgendamentoDTO agendamento)
         {
+            if (agendamento == null || agendamento.Id != 0 && agendamento.Id != id)
+                return BadRequest();
+
             if (string.IsNullOrWhiteSpace(agendamento.Titulo))
-            {
                 return BadRequest("O título não pode ser vazio.");
-            }
 
             if (agendamento.DataHora < DateTime.Now)
-            {
                 return BadRequest("A data do agendamento não pode estar no passado.");
-            }
 
             agendamento.Id = id;
             var atualizado = await _agendamentoService.AtualizarAsync(agendamento);
             if (!atualizado)
-            {
-                return NotFound();
-            }
+                    return NotFound();
 
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remover(int id)
+        {
+            var removido = await _agendamentoService.RemoverAsync(id);
+            if (!removido)
+                return NotFound();
             return NoContent();
         }
     }
