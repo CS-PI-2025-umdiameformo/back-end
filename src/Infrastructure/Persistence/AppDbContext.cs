@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OrganizeAgenda.Domain.DTOs;
+using OrganizeAgenda.Domain.Entities;
 
 namespace OrganizeAgenda.Infrastructure.Persistence
 {
