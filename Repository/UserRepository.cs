@@ -69,5 +69,36 @@ namespace OrganizeAgenda.Repository
             var affected = await _context.SaveChangesAsync();
             return affected > 0;
         }
+
+        /// <summary>
+        /// Verifica se existe usuário com o email informado
+        /// </summary>
+        public async Task<bool> ExistePorEmailAsync(string email, int? excluirId = null)
+        {
+            var query = _context.Users.AsNoTracking().Where(u => u.Email == email);
+            
+            if (excluirId.HasValue)
+                query = query.Where(u => u.Id != excluirId.Value);
+            
+            return await query.AnyAsync();
+        }
+
+        /// <summary>
+        /// Verifica se existe usuário com o CPF informado
+        /// </summary>
+        public async Task<bool> ExistePorCpfAsync(string cpf, int? excluirId = null)
+        {
+            // Por enquanto retorna false pois UserDTO não tem CPF
+            return await Task.FromResult(false);
+        }
+
+        /// <summary>
+        /// Verifica se existe usuário com o telefone informado
+        /// </summary>
+        public async Task<bool> ExistePorTelefoneAsync(string telefone, int? excluirId = null)
+        {
+            // Por enquanto retorna false pois UserDTO não tem Telefone
+            return await Task.FromResult(false);
+        }
     }
 }
