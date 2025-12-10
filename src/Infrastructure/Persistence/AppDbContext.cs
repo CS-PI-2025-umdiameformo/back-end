@@ -65,6 +65,11 @@ namespace OrganizeAgenda.Infrastructure.Persistence
                     .HasMaxLength(500)
                     .HasColumnName("descricao");
 
+                builder.Property(a => a.Recorrencia)
+                    .IsRequired()
+                    .HasColumnName("recorrencia")
+                    .HasDefaultValue(0);
+
                 //builder.HasOne(a => a.Usuario)
                 //    .WithMany(e => e.Agendamentos)
                 //    .HasForeignKey(a => a.UsuarioId)

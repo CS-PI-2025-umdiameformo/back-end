@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OrganizeAgenda.Domain.DTOs;
+using OrganizeAgenda.Domain.Entities;
 using OrganizeAgenda.Infrastructure.Persistence;
 using OrganizeAgenda.Infrastructure.Persistence.Interface;
 
@@ -19,14 +20,14 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
 
         public async Task<int> CriarAsync(AgendamentoDTO agendamento)
         {
-            // acessar qual usuário e associar ao agendamento no futuro
-
             Agendamento a = new Agendamento
             {
                 DataHora = agendamento.DataHora,
                 Descricao = agendamento.Descricao,
                 Titulo = agendamento.Titulo,
-                UsuarioId = agendamento.UsuarioId,
+                UsuarioId = agendamento.Usuario.Id,
+                Recorrencia = agendamento.Recorrencia,
+                Id = agendamento.Id,
             };
 
             var agendado = _context.Agendamentos.Add(a);
@@ -44,7 +45,13 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
                     Titulo = a.Titulo,
                     DataHora = a.DataHora,
                     Descricao = a.Descricao,
-                    UsuarioId = a.UsuarioId
+                    Recorrencia = a.Recorrencia,
+                    Usuario = a.Usuario != null ? new UserDTO
+                    {
+                        Id = a.Usuario.Id,
+                        Nome = a.Usuario.Nome,
+                        Email = a.Usuario.Email,
+                    } : null!,
                 })
                 .ToListAsync();
         }
@@ -64,7 +71,13 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
                 Titulo = a.Titulo,
                 DataHora = a.DataHora,
                 Descricao = a.Descricao,
-                UsuarioId = a.UsuarioId
+                Recorrencia = a.Recorrencia,
+                Usuario = a.Usuario != null ? new UserDTO
+                {
+                    Id = a.Usuario.Id,
+                    Nome = a.Usuario.Nome,
+                    Email = a.Usuario.Email,
+                } : null!,
             };
         }
 
@@ -77,7 +90,8 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
             entity.Titulo = agendamento.Titulo;
             entity.DataHora = agendamento.DataHora;
             entity.Descricao = agendamento.Descricao;
-            entity.UsuarioId = agendamento.UsuarioId;
+            entity.UsuarioId = agendamento.Usuario.Id;
+            entity.Recorrencia = agendamento.Recorrencia;
 
             _context.Agendamentos.Update(entity);
             var affected = await _context.SaveChangesAsync();

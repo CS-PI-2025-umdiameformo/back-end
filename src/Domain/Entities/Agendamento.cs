@@ -1,4 +1,6 @@
-﻿namespace OrganizeAgenda.Domain.Entities
+﻿using OrganizeAgenda.DTOs;
+
+namespace OrganizeAgenda.Domain.Entities
 {
     /// <summary>
     /// Data Transfer Object para informações de agendamento.
@@ -34,5 +36,10 @@
         /// Usuário que criou o agendamento.
         /// </summary>
         public User Usuario { get; set; } = new User();
+
+        /// <summary>
+        /// Tipo de recorrência do agendamento.
+        /// </summary>
+        public TipoRecorrencia Recorrencia { get; set; } = TipoRecorrencia.Nenhuma;
     }
 }
