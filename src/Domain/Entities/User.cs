@@ -58,5 +58,7 @@ namespace OrganizeAgenda.Domain.Entities
         /// Agendamentos do usuário.
         /// </summary>
         public ICollection<Agendamento>? Agendamentos { get; set; } = new List<Agendamento>();
+
+        public virtual Prestador? Prestador { get; set; }
         }
 }

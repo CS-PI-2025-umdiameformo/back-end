@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizeAgenda.Domain.DTOs;
+using OrganizeAgenda.Domain.Entities;
 using OrganizeAgenda.Infrastructure.Persistence.Interface;
 using System.Text;
 

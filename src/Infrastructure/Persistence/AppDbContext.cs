@@ -9,6 +9,8 @@ namespace OrganizeAgenda.Infrastructure.Persistence
 
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Agendamento> Agendamentos { get; set; } = null!;
+        
+        public DbSet<Prestador> Prestadores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +47,11 @@ namespace OrganizeAgenda.Infrastructure.Persistence
 
                 builder.HasIndex(u => u.Email)
                     .IsUnique();
+                
+                builder.HasOne(u => u.Prestador)
+                    .WithOne(p => p.Usuario)
+                    .HasForeignKey<Prestador>(p => p.UsuarioId);
+
             });
 
             modelBuilder.Entity<Agendamento>(builder =>
