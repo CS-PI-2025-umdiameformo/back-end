@@ -88,8 +88,12 @@ namespace OrganizeAgenda.Repository
         /// </summary>
         public async Task<bool> ExistePorCpfAsync(string cpf, int? excluirId = null)
         {
-            // Por enquanto retorna false pois UserDTO não tem CPF
-            return await Task.FromResult(false);
+            var query = _context.Users.AsNoTracking().Where(u => u.Cpf == cpf);
+            
+            if (excluirId.HasValue)
+                query = query.Where(u => u.Id != excluirId.Value);
+            
+            return await query.AnyAsync();
         }
 
         /// <summary>
@@ -97,8 +101,12 @@ namespace OrganizeAgenda.Repository
         /// </summary>
         public async Task<bool> ExistePorTelefoneAsync(string telefone, int? excluirId = null)
         {
-            // Por enquanto retorna false pois UserDTO não tem Telefone
-            return await Task.FromResult(false);
+            var query = _context.Users.AsNoTracking().Where(u => u.Telefone == telefone);
+            
+            if (excluirId.HasValue)
+                query = query.Where(u => u.Id != excluirId.Value);
+            
+            return await query.AnyAsync();
         }
     }
 }

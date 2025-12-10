@@ -87,19 +87,25 @@ namespace OrganizeAgenda.Services
                 throw new DuplicidadeException("Email", "Este email já está cadastrado");
             }
 
-            // Validação de CPF (quando implementado)
-            // var cpfNormalizado = NormalizadorDados.NormalizarCpf(user.Cpf);
-            // if (await _userRepository.ExistePorCpfAsync(cpfNormalizado, excluirId))
-            // {
-            //     throw new DuplicidadeException("CPF", "Este CPF já está cadastrado");
-            // }
+            // Validação de CPF
+            if (!string.IsNullOrWhiteSpace(user.Cpf))
+            {
+                var cpfNormalizado = NormalizadorDados.NormalizarCpf(user.Cpf);
+                if (await _userRepository.ExistePorCpfAsync(cpfNormalizado, excluirId))
+                {
+                    throw new DuplicidadeException("CPF", "Este CPF já está cadastrado");
+                }
+            }
 
-            // Validação de Telefone (quando implementado)
-            // var telefoneNormalizado = NormalizadorDados.NormalizarTelefone(user.Telefone);
-            // if (await _userRepository.ExistePorTelefoneAsync(telefoneNormalizado, excluirId))
-            // {
-            //     throw new DuplicidadeException("Telefone", "Este telefone já está cadastrado");
-            // }
+            // Validação de Telefone
+            if (!string.IsNullOrWhiteSpace(user.Telefone))
+            {
+                var telefoneNormalizado = NormalizadorDados.NormalizarTelefone(user.Telefone);
+                if (await _userRepository.ExistePorTelefoneAsync(telefoneNormalizado, excluirId))
+                {
+                    throw new DuplicidadeException("Telefone", "Este telefone já está cadastrado");
+                }
+            }
         }
     }
 }
