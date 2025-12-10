@@ -55,17 +55,30 @@ namespace OrganizeAgenda.Controllers
         [Route(ApiRoutes.User.Create)]
         public async Task<IActionResult> CreateUser([FromBody] UserDTO user, [FromServices] IUserService service)
         {
-            var createdUser = await service.CreateUserAsync(user);
-
-            var response = new UserResponseDto
+            try
             {
-                Id = createdUser.Id,
-                Name = createdUser.Name,
-                Email = createdUser.Email,
-                CreatedAt = createdUser.CreatedAt
-            };
+                var createdUser = await service.CreateUserAsync(user);
 
-            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, response);
+                var response = new UserResponseDto
+                {
+                    Id = createdUser.Id,
+                    Name = createdUser.Name,
+                    Email = createdUser.Email,
+                    CreatedAt = createdUser.CreatedAt
+                };
+
+                return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, response);
+            }
+            catch (DuplicidadeException ex)
+            {
+                var erro = new ErroCampoDuplicadoDTO
+                {
+                    Duplicado = true,
+                    Campo = ex.Campo,
+                    Mensagem = ex.Message
+                };
+                return BadRequest(erro);
+            }
         }
 
         // PUT: api/User/5
@@ -73,11 +86,24 @@ namespace OrganizeAgenda.Controllers
         [Route(ApiRoutes.User.Update)]
         public async Task<IActionResult> UpdateUser([FromBody] UserDTO user, [FromServices] IUserService service)
         {
-            var updated = await service.UpdateUserAsync(user);
-            if (!updated)
-                return NotFound();
+            try
+            {
+                var updated = await service.UpdateUserAsync(user);
+                if (!updated)
+                    return NotFound();
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (DuplicidadeException ex)
+            {
+                var erro = new ErroCampoDuplicadoDTO
+                {
+                    Duplicado = true,
+                    Campo = ex.Campo,
+                    Mensagem = ex.Message
+                };
+                return BadRequest(erro);
+            }
         }
 
         // DELETE: api/User/5

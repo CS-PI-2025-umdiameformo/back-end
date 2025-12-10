@@ -1,5 +1,6 @@
 ﻿using OrganizeAgenda.Abstractions;
 using OrganizeAgenda.DTOs.User;
+using OrganizeAgenda.Utils;
 
 namespace OrganizeAgenda.Services
 {
@@ -29,6 +30,7 @@ namespace OrganizeAgenda.Services
         /// <returns>Usuário criado.</returns>
         public async Task<UserDTO> CreateUserAsync(UserDTO user)
         {
+            await ValidarDuplicidade(user, null);
             var createdUser = await _userRepository.CreateUserAsync(user);
             return createdUser;
         }
@@ -69,7 +71,35 @@ namespace OrganizeAgenda.Services
         /// <returns>Verdadeiro se a atualização foi bem-sucedida, falso caso contrário.</returns>
         public async Task<bool> UpdateUserAsync(UserDTO user)
         {
+            await ValidarDuplicidade(user, user.Id);
             return await _userRepository.UpdateAsync(user);
+        }
+
+        /// <summary>
+        /// Valida se há campos duplicados
+        /// </summary>
+        private async Task ValidarDuplicidade(UserDTO user, int? excluirId)
+        {
+            // Normaliza e valida email
+            var emailNormalizado = NormalizadorDados.NormalizarEmail(user.Email);
+            if (await _userRepository.ExistePorEmailAsync(emailNormalizado, excluirId))
+            {
+                throw new DuplicidadeException("Email", "Este email já está cadastrado");
+            }
+
+            // Validação de CPF (quando implementado)
+            // var cpfNormalizado = NormalizadorDados.NormalizarCpf(user.Cpf);
+            // if (await _userRepository.ExistePorCpfAsync(cpfNormalizado, excluirId))
+            // {
+            //     throw new DuplicidadeException("CPF", "Este CPF já está cadastrado");
+            // }
+
+            // Validação de Telefone (quando implementado)
+            // var telefoneNormalizado = NormalizadorDados.NormalizarTelefone(user.Telefone);
+            // if (await _userRepository.ExistePorTelefoneAsync(telefoneNormalizado, excluirId))
+            // {
+            //     throw new DuplicidadeException("Telefone", "Este telefone já está cadastrado");
+            // }
         }
     }
 }
