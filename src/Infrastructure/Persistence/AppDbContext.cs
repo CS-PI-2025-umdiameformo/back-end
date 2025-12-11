@@ -11,6 +11,7 @@ namespace OrganizeAgenda.Infrastructure.Persistence
         public DbSet<Agendamento> Agendamentos { get; set; } = null!;
         
         public DbSet<Prestador> Prestadores { get; set; }
+        public DbSet<ServicoPrestador> ServicosPrestador { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,13 +75,60 @@ namespace OrganizeAgenda.Infrastructure.Persistence
 
                 builder.Property(a => a.Recorrencia)
                     .IsRequired()
-                    .HasColumnName("recorrencia")
-                    .HasDefaultValue(0);
+                    .HasColumnName("recorrencia");
 
                 //builder.HasOne(a => a.Usuario)
                 //    .WithMany(e => e.Agendamentos)
                 //    .HasForeignKey(a => a.UsuarioId)
                 //    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Prestador>(builder =>
+            {
+                builder.ToTable("prestadores");
+                builder.HasKey(p => p.Id);
+
+                builder.Property(p => p.RegistroProfissional)
+                    .HasMaxLength(50)
+                    .HasColumnName("registro_profissional");
+
+                builder.Property(p => p.Bio)
+                    .HasMaxLength(1000)
+                    .HasColumnName("bio");
+
+                builder.HasOne(p => p.Usuario)
+                    .WithOne(u => u.Prestador)
+                    .HasForeignKey<Prestador>(p => p.UsuarioId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasMany(p => p.ServicosOferecidos)
+                    .WithOne(s => s.Prestador)
+                    .HasForeignKey(s => s.PrestadorId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<ServicoPrestador>(builder =>
+            {
+                builder.ToTable("servicos_prestador");
+                builder.HasKey(s => s.Id);
+
+                builder.Property(s => s.Nome)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnName("nome");
+
+                builder.Property(s => s.Preco)
+                    .HasColumnName("preco")
+                    .HasPrecision(18, 2);
+
+                builder.Property(s => s.DuracaoMedia)
+                    .HasColumnName("duracao_media");
+
+                builder.HasOne(s => s.Prestador)
+                    .WithMany(p => p.ServicosOferecidos)
+                    .HasForeignKey(s => s.PrestadorId);
             });
         }
     }

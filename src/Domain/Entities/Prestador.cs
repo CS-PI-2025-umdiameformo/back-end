@@ -5,10 +5,10 @@ namespace OrganizeAgenda.Domain.Entities
 {
     public record Prestador
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         // Foreign Key para o Usuário
-        public Guid UsuarioId { get; set; }
+        public int UsuarioId { get; set; }
         public virtual required User Usuario { get; set; }
 
         public string? RegistroProfissional { get; set; } // Ex: CRM, OAB
