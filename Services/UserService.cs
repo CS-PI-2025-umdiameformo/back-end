@@ -9,25 +9,21 @@ namespace OrganizeAgenda.Services
     /// </summary>
     public class UserService : IUserService
     {
-        /// <summary>
-        /// Repositório de usuários utilizado para acesso aos dados.
-        /// </summary>
         private readonly IUserRepository _userRepository;
+        private readonly IAgendamentoRepository _agendamentoRepository;
 
         /// <summary>
-        /// Construtor que recebe uma instância de <see cref="IUserRepository"/>.
+        /// Construtor que recebe as dependências necessárias
         /// </summary>
-        /// <param name="userRepository">Repositório de usuários.</param>
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IAgendamentoRepository agendamentoRepository)
         {
             _userRepository = userRepository;
+            _agendamentoRepository = agendamentoRepository;
         }
 
         /// <summary>
         /// Cria um novo usuário.
         /// </summary>
-        /// <param name="user">Dados do usuário a ser criado.</param>
-        /// <returns>Usuário criado.</returns>
         public async Task<UserDTO> CreateUserAsync(UserDTO user)
         {
             await ValidarDuplicidade(user, null);
@@ -38,17 +34,25 @@ namespace OrganizeAgenda.Services
         /// <summary>
         /// Deleta um usuário pelo ID.
         /// </summary>
-        /// <param name="id">ID do usuário a ser deletado.</param>
-        /// <returns>Verdadeiro se o usuário foi deletado com sucesso, falso caso contrário.</returns>
         public async Task<bool> DeleteUserAsync(int id)
         {
+            // Verifica se há agendamentos vinculados
+            var quantidadeAgendamentos = await _agendamentoRepository.ContarPorUsuarioAsync(id);
+            
+            if (quantidadeAgendamentos > 0)
+            {
+                throw new ExclusaoBloqueadaException(
+                    quantidadeAgendamentos,
+                    $"Não é possível excluir o usuário. Existem {quantidadeAgendamentos} agendamento(s) vinculado(s)."
+                );
+            }
+
             return await _userRepository.DeleteAsync(id);
         }
 
         /// <summary>
         /// Obtém todos os usuários.
         /// </summary>
-        /// <returns>Lista de usuários.</returns>
         public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
         {
             return await _userRepository.GetAllAsync();
@@ -57,8 +61,6 @@ namespace OrganizeAgenda.Services
         /// <summary>
         /// Obtém um usuário pelo ID.
         /// </summary>
-        /// <param name="id">ID do usuário.</param>
-        /// <returns>Usuário correspondente ao ID, ou nulo se não encontrado.</returns>
         public async Task<UserDTO?> GetUserByIdAsync(int id)
         {
             return await _userRepository.GetByIdAsync(id);
@@ -67,8 +69,6 @@ namespace OrganizeAgenda.Services
         /// <summary>
         /// Atualiza um usuário existente.
         /// </summary>
-        /// <param name="user">Dados atualizados do usuário.</param>
-        /// <returns>Verdadeiro se a atualização foi bem-sucedida, falso caso contrário.</returns>
         public async Task<bool> UpdateUserAsync(UserDTO user)
         {
             await ValidarDuplicidade(user, user.Id);
