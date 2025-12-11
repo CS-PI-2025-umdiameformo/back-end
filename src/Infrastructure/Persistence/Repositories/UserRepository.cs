@@ -53,6 +53,9 @@ namespace OrganizeAgenda.Infrastructure.Persistence.Repositories
         /// </summary>
         public async Task<UserDTOResponse> CreateUserAsync(UserDTO user)
         {
+            if (await _context.Users.AnyAsync(u => u.Email == user.Email))
+                throw new ArgumentException("Já existe um usuário com este email. ",nameof(user));
+
             var created = new User
             {
                 Nome  = user.Nome,
