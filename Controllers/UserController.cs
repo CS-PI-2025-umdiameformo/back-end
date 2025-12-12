@@ -111,11 +111,24 @@ namespace OrganizeAgenda.Controllers
         [Route(ApiRoutes.User.Delete)]
         public async Task<IActionResult> DeleteUser([FromQuery] int id, [FromServices] IUserService service)
         {
-            var deleted = await service.DeleteUserAsync(id);
-            if (!deleted)
-                return NotFound();
+            try
+            {
+                var deleted = await service.DeleteUserAsync(id);
+                if (!deleted)
+                    return NotFound();
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (ExclusaoBloqueadaException ex)
+            {
+                var erro = new ErroExclusaoBloqueadaDTO
+                {
+                    Bloqueado = true,
+                    QuantidadeAgendamentos = ex.QuantidadeAgendamentos,
+                    Mensagem = ex.Message
+                };
+                return BadRequest(erro);
+            }
         }
     }
 }
