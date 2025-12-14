@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizeAgenda.DTOs;
+using OrganizeAgenda.DTOs.User;
 
 namespace OrganizeAgenda.Repository
 {

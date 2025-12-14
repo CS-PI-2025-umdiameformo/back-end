@@ -18,6 +18,9 @@ builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserService, OrganizeAge
 // Register IUserRepository with UserRepository
 builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserRepository, OrganizeAgenda.Repository.UserRepository>();
 
+// Register IAgendamentoRepository with AgendamentoRepository
+builder.Services.AddScoped<OrganizeAgenda.Abstractions.IAgendamentoRepository, OrganizeAgenda.Repository.AgendamentoRepository>();
+
 // Register IAgendamentoService with AgendamentoService
 builder.Services.AddScoped<OrganizeAgenda.Abstractions.IAgendamentoService, OrganizeAgenda.Services.AgendamentoService>();
 
