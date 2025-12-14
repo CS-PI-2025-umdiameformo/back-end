@@ -4,6 +4,18 @@ using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuração de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -18,10 +30,16 @@ builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserService, OrganizeAge
 // Register IUserRepository with UserRepository
 builder.Services.AddScoped<OrganizeAgenda.Abstractions.IUserRepository, OrganizeAgenda.Repository.UserRepository>();
 
+// Register IAgendamentoRepository with AgendamentoRepository
+builder.Services.AddScoped<OrganizeAgenda.Abstractions.IAgendamentoRepository, OrganizeAgenda.Repository.AgendamentoRepository>();
+
 // Register IAgendamentoService with AgendamentoService
 builder.Services.AddScoped<OrganizeAgenda.Abstractions.IAgendamentoService, OrganizeAgenda.Services.AgendamentoService>();
 
 var app = builder.Build();
+
+// Habilitar CORS
+app.UseCors("AllowFrontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
