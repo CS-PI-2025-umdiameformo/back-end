@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 using OrganizeAgenda.Abstractions;
 using OrganizeAgenda.DTOs;
 
 namespace OrganizeAgenda.Repository
 {
     /// <summary>
-    /// Repositório para operações de agendamento utilizando Entity Framework.
+    /// RepositÃ³rio para operaÃ§Ãµes de agendamento utilizando Entity Framework.
     /// </summary>
     public class AgendamentoRepository : IAgendamentoRepository
     {
@@ -49,6 +49,17 @@ namespace OrganizeAgenda.Repository
             _context.Agendamentos.Remove(agendamento);
             var affected = await _context.SaveChangesAsync();
             return affected > 0;
+        }
+
+        /// <summary>
+        /// Conta quantos agendamentos um usuÃ¡rio possui
+        /// </summary>
+        public async Task<int> ContarPorUsuarioAsync(int usuarioId)
+        {
+            return await _context.Agendamentos
+                .AsNoTracking()
+                .Where(a => a.Usuario.Id == usuarioId)
+                .CountAsync();
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrganizeAgenda.DTOs;
 using OrganizeAgenda.Abstractions;
-using OrganizeAgenda.Services;
-using OrganizeAgenda.Abstractions;
-using OrganizeAgenda.DTOs;
+
 namespace OrganizeAgenda.Controllers
 {
     /// <summary>
@@ -15,12 +13,10 @@ namespace OrganizeAgenda.Controllers
     {
         private readonly IAgendamentoService _agendamentoService;
 
-
         /// <summary>
         /// Construtor que injeta o serviço de agendamentos.
         /// </summary>
         /// <param name="agendamentoService">Serviço de agendamentos.</param>
-
         public AgendamentoController(IAgendamentoService agendamentoService)
         {
             _agendamentoService = agendamentoService;
@@ -57,41 +53,6 @@ namespace OrganizeAgenda.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, [FromBody] AgendamentoDTO agendamento)
         {
-            if (agendamento == null || agendamento.Usuario == null || agendamento.Usuario.Id != id)
-                return BadRequest();
-
-            var atualizado = await _agendamentoService.AtualizarAsync(agendamento);
-            if (!atualizado)
-                return NotFound();
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Remover(int id)
-        {
-            var removido = await _agendamentoService.RemoverAsync(id);
-            if (!removido)
-                return NotFound();
-            return NoContent();
-        }
-    }
-}
-            {
-                return NotFound();
-            }
-
-            return Ok(agendamento);
-        }
-
-        /// <summary>
-        /// Atualiza um agendamento existente.
-        /// </summary>
-        /// <param name="id">Identificador do agendamento.</param>
-        /// <param name="agendamento">Dados atualizados do agendamento.</param>
-        /// <returns>Resultado da operação.</returns>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Atualizar(int id, [FromBody] AgendamentoDTO agendamento)
-        {
             if (string.IsNullOrWhiteSpace(agendamento.Titulo))
             {
                 return BadRequest("O título não pode ser vazio.");
@@ -109,6 +70,15 @@ namespace OrganizeAgenda.Controllers
                 return NotFound();
             }
 
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remover(int id)
+        {
+            var removido = await _agendamentoService.RemoverAsync(id);
+            if (!removido)
+                return NotFound();
             return NoContent();
         }
     }

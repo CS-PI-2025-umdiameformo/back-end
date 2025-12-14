@@ -19,6 +19,17 @@
         /// E-mail do usuário.
         /// </summary>
         public string Email { get; set; } = string.Empty;
+
+        /// <summary>
+        /// CPF do usuário.
+        /// </summary>
+        public string Cpf { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Telefone do usuário.
+        /// </summary>
+        public string Telefone { get; set; } = string.Empty;
+
         /// <summary>
         /// Hash da senha do usuário.
         /// </summary>
